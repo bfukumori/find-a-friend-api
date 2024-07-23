@@ -1,16 +1,27 @@
-import { FindPetByIdUseCase } from '@use-cases/findPetByIdUseCase.js';
+import { ClientError } from '@errors/ClientError.js';
+import { makeFindPetById } from '@factories/makeFindPetById.js';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { findPetByIdSchema } from './schemas/findPetByIdSchema.js';
+import { z } from 'zod';
 
-export class FindPetByIdController {
-  constructor(private readonly findPetByIdUseCase: FindPetByIdUseCase) {}
+const findPetByIdSchema = z.object({
+  id: z.string().uuid(),
+});
 
-  async handler(req: FastifyRequest, res: FastifyReply) {
-    const params = findPetByIdSchema.parse(req.params);
-    const { id } = params;
+export async function findPetByIdController(
+  req: FastifyRequest,
+  res: FastifyReply
+) {
+  const params = findPetByIdSchema.parse(req.params);
+  const { id } = params;
 
-    const pet = await this.findPetByIdUseCase.execute(id);
+  try {
+    const useCase = makeFindPetById();
+    const pet = await useCase.execute(id);
 
     return res.status(200).send(pet);
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.code).send({ message: error.message });
+    }
   }
 }

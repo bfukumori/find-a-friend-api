@@ -1,15 +1,37 @@
-import { AuthOrgUseCase } from '@use-cases/authOrgUseCase.js';
+import { ClientError } from '@errors/ClientError.js';
+import { makeAuthOrg } from '@factories/makeAuthOrg.js';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { authOrgSchema } from './schemas/authOrgSchema.js';
+import { z } from 'zod';
 
-export class AuthOrgController {
-  constructor(private readonly authOrgUseCase: AuthOrgUseCase) {}
+const authOrgSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});
 
-  async handler(req: FastifyRequest, res: FastifyReply): Promise<void> {
-    const params = authOrgSchema.parse(req.body);
+export async function authOrgController(
+  req: FastifyRequest,
+  res: FastifyReply
+): Promise<void> {
+  const params = authOrgSchema.parse(req.body);
 
-    await this.authOrgUseCase.execute(params);
+  try {
+    const useCase = makeAuthOrg();
+    const org = await useCase.execute(params);
 
-    return res.status(200).send();
+    const token = await res.jwtSign(
+      { role: 'ADMIN' },
+      {
+        sign: {
+          sub: org.id,
+          expiresIn: '1d',
+        },
+      }
+    );
+
+    return res.status(200).send({ token });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.code).send({ message: error.message });
+    }
   }
 }

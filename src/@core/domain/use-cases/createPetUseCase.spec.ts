@@ -5,7 +5,6 @@ import { InMemoryOrgRepository } from '@repositories/in-memory/InMemoryOrgReposi
 import { InMemoryPetRepository } from '@repositories/in-memory/InMemoryPetRepository.js';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CreatePetUseCase } from './createPetUseCase.js';
-import { CreatePetRequestDTO } from './dto/createPetDTO.js';
 
 let orgRepository: InMemoryOrgRepository;
 let petRepository: InMemoryPetRepository;
@@ -35,7 +34,7 @@ describe('#CreatePetUseCase', () => {
       password: '123456',
     });
 
-    const petData: CreatePetRequestDTO = {
+    const petData = {
       name: 'Rex',
       age: AgeGroup.YOUNG,
       about: 'Very friendly and playful',
@@ -65,7 +64,7 @@ describe('#CreatePetUseCase', () => {
   });
 
   it('should throw and error when trying create a pet without an organization', async () => {
-    const petData: CreatePetRequestDTO = {
+    const petData = {
       name: 'Rex',
       age: AgeGroup.YOUNG,
       about: 'Very friendly and playful',

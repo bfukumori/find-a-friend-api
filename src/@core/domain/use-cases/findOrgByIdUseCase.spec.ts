@@ -27,11 +27,10 @@ describe('#FindOrgByIdUseCase', () => {
       latitude: 123.456,
       longitude: 123.456,
       whatsapp: '1234567890',
+      password: '123456',
     };
 
-    await orgRepository.create(
-      new Organization({ ...orgData, password: '123456' })
-    );
+    await orgRepository.create(new Organization(orgData));
 
     const result = await sut.execute('123');
 

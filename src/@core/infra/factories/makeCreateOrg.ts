@@ -3,10 +3,10 @@ import { CreateOrgUseCase } from '@use-cases/createOrgUseCase.js';
 import { PrismaOrgRepository } from 'src/@core/infra/db/prismaOrgRepository.js';
 
 export const makeCreateOrg = () => {
-  const useCase = new CreateOrgUseCase(
-    new PrismaOrgRepository(),
-    new BCryptService()
-  );
+  const orgRepository = new PrismaOrgRepository();
+  const encrypter = new BCryptService();
+
+  const useCase = new CreateOrgUseCase(orgRepository, encrypter);
 
   return useCase;
 };

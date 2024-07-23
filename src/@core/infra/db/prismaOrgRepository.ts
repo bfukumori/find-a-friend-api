@@ -36,4 +36,18 @@ export class PrismaOrgRepository implements IOrgRepository {
 
     return result;
   }
+
+  async findByWhatsapp(whatsapp: string): Promise<Organization | null> {
+    const result = await prisma.organization.findUnique({
+      where: {
+        whatsapp,
+      },
+    });
+
+    if (!result) {
+      return null;
+    }
+
+    return result;
+  }
 }

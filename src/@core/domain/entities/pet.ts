@@ -23,7 +23,7 @@ type PetProps = {
 };
 
 export default class Pet {
-  public readonly id: string;
+  public readonly id?: string;
   public readonly name: string;
   public readonly about: string;
   public readonly age: AgeGroupType;
@@ -31,9 +31,9 @@ export default class Pet {
   public readonly energyLevel: EnergyLevel;
   public readonly independenceLevel: IndependenceLevel;
   public readonly roomSize: RoomSize;
-  public readonly photos: string[];
-  public readonly requirements: string[];
-  public readonly adopted: boolean;
+  public readonly photos?: string[];
+  public readonly requirements?: string[];
+  public readonly adopted?: boolean;
   public readonly organizationId: string;
 
   constructor(props: PetProps) {

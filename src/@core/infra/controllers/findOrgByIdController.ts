@@ -1,16 +1,29 @@
-import { FindOrgByIdUseCase } from '@use-cases/findOrgByIdUseCase.js';
+import { ClientError } from '@errors/ClientError.js';
+import { makeFindOrgById } from '@factories/makeFindOrgById.js';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { findOrgByIdSchema } from './schemas/findOrgByIdSchema.js';
+import { z } from 'zod';
 
-export class FindOrgByIdController {
-  constructor(private readonly findOrgByIdUseCase: FindOrgByIdUseCase) {}
+const findOrgByIdSchema = z.object({
+  id: z.string().uuid(),
+});
 
-  async handler(req: FastifyRequest, res: FastifyReply) {
-    const params = findOrgByIdSchema.parse(req.params);
-    const { id } = params;
+export async function findOrgByIdController(
+  req: FastifyRequest,
+  res: FastifyReply
+) {
+  const params = findOrgByIdSchema.parse(req.params);
+  const { id } = params;
 
-    const org = await this.findOrgByIdUseCase.execute(id);
+  try {
+    const useCase = makeFindOrgById();
+    const org = await useCase.execute(id);
+
+    Reflect.deleteProperty(org, 'password');
 
     return res.status(200).send(org);
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.code).send({ message: error.message });
+    }
   }
 }

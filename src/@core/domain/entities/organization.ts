@@ -17,7 +17,7 @@ type OrganizationProps = {
 };
 
 export default class Organization {
-  public readonly id: string;
+  public readonly id?: string;
   public readonly owner: string;
   public readonly email: string;
   public readonly postalCode: string;

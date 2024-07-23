@@ -1,10 +1,12 @@
-import { InvalidCredentials } from '@errors/InvalidCredentials.js';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-export async function verifyJwt(req: FastifyRequest, res: FastifyReply) {
+export async function verifyJwt(
+  req: FastifyRequest,
+  res: FastifyReply
+): Promise<void> {
   try {
     await req.jwtVerify();
   } catch (error) {
-    throw new InvalidCredentials('Unauthorized');
+    return res.status(401).send({ message: 'Unauthorized' });
   }
 }

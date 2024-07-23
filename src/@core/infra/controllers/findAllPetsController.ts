@@ -1,15 +1,31 @@
-import { FindAllPetsUseCase } from '@use-cases/findAllPetsUseCase.js';
+import { AgeGroup, Level, Size } from '@constants/enums.js';
+import { ClientError } from '@errors/ClientError.js';
+import { makeFindAllPets } from '@factories/makeFindAllPets.js';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { findAllPetsSchema } from './schemas/findAllPetsSchema.js';
+import { z } from 'zod';
 
-export class FindAllPetsController {
-  constructor(private readonly findAllPetsUseCase: FindAllPetsUseCase) {}
+const findAllPetsSchema = z.object({
+  city: z.string().min(3),
+  age: z.enum([AgeGroup.ADULT, AgeGroup.SENIOR, AgeGroup.YOUNG]).optional(),
+  size: z.enum([Size.SMALL, Size.MEDIUM, Size.LARGE]).optional(),
+  energyLevel: z.enum([Level.LOW, Level.MEDIUM, Level.HIGH]).optional(),
+  independenceLevel: z.enum([Level.LOW, Level.MEDIUM, Level.HIGH]).optional(),
+});
 
-  async handler(req: FastifyRequest, res: FastifyReply): Promise<void> {
-    const query = findAllPetsSchema.parse(req.query);
+export async function findAllPetsController(
+  req: FastifyRequest,
+  res: FastifyReply
+): Promise<void> {
+  const query = findAllPetsSchema.parse(req.query);
 
-    const pets = await this.findAllPetsUseCase.execute(query);
+  try {
+    const useCase = makeFindAllPets();
+    const pets = await useCase.execute(query);
 
     return res.status(200).send({ pets });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.code).send({ message: error.message });
+    }
   }
 }

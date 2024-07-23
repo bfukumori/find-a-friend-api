@@ -1,8 +1,8 @@
 import { ClientError } from './ClientError.js';
 
 export class InvalidCredentials extends ClientError {
-  constructor(message: string) {
-    super(message);
+  constructor() {
+    super('Invalid credentials', 401);
     this.name = 'InvalidCredentials';
   }
 }

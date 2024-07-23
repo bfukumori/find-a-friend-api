@@ -3,10 +3,10 @@ import { PrismaOrgRepository } from 'src/@core/infra/db/prismaOrgRepository.js';
 import { PrismaPetRepository } from 'src/@core/infra/db/prismaPetRepository.js';
 
 export const makeCreatePet = () => {
-  const useCase = new CreatePetUseCase(
-    new PrismaPetRepository(),
-    new PrismaOrgRepository()
-  );
+  const petRepository = new PrismaPetRepository();
+  const orgRepository = new PrismaOrgRepository();
+
+  const useCase = new CreatePetUseCase(petRepository, orgRepository);
 
   return useCase;
 };

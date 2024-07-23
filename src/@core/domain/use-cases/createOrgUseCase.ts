@@ -2,7 +2,21 @@ import Organization from '@entities/organization.js';
 import { AlreadyExists } from '@errors/AlreadyExists.js';
 import { IOrgRepository } from '@repositories/interfaces/IOrgRepository.js';
 import { IEncrypter } from '@services/interfaces/IEncrypter.js';
-import { CreateOrgRequestDTO } from './dto/createOrgDTO.js';
+
+export type CreateOrgRequest = {
+  owner: string;
+  email: string;
+  postalCode: string;
+  addressName: string;
+  addressNumber: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  latitude: number;
+  longitude: number;
+  whatsapp: string;
+  password: string;
+};
 
 export class CreateOrgUseCase {
   constructor(
@@ -10,10 +24,18 @@ export class CreateOrgUseCase {
     private readonly encrypter: IEncrypter
   ) {}
 
-  async execute(orgData: CreateOrgRequestDTO): Promise<void> {
-    const alreadyExists = await this.orgRepository.findByEmail(orgData.email);
+  async execute(orgData: CreateOrgRequest): Promise<void> {
+    const foundByEmail = await this.orgRepository.findByEmail(orgData.email);
 
-    if (alreadyExists) {
+    if (foundByEmail) {
+      throw new AlreadyExists('Organization already exists');
+    }
+
+    const foundByWhatsapp = await this.orgRepository.findByWhatsapp(
+      orgData.whatsapp
+    );
+
+    if (foundByWhatsapp) {
       throw new AlreadyExists('Organization already exists');
     }
 

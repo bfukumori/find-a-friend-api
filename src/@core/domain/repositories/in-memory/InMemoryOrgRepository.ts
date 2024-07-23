@@ -19,4 +19,10 @@ export class InMemoryOrgRepository implements IOrgRepository {
   async findById(id: string): Promise<Organization | null> {
     return Array.from(this.items).find((org) => org.id === id) ?? null;
   }
+
+  async findByWhatsapp(whatsapp: string): Promise<Organization | null> {
+    return (
+      Array.from(this.items).find((org) => org.whatsapp === whatsapp) ?? null
+    );
+  }
 }
