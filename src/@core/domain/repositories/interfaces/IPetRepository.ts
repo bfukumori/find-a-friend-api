@@ -1,11 +1,17 @@
+import {
+  AgeGroupType,
+  EnergyLevel,
+  IndependenceLevel,
+  PetSize,
+} from '@constants/types.js';
 import Pet from '@entities/pet.js';
 
 export type FindAllParams = {
   city: string;
-  age?: string;
-  energyLevel?: string;
-  size?: string;
-  independenceLevel?: string;
+  age?: AgeGroupType;
+  energyLevel?: EnergyLevel;
+  size?: PetSize;
+  independenceLevel?: IndependenceLevel;
 };
 
 export interface IPetRepository {

@@ -17,7 +17,7 @@ describe('#FindPetByIdUseCase', () => {
     sut = new FindPetByIdUseCase(petRepository);
   });
 
-  it("should find a pet by it's ID", async () => {
+  it('should find a pet by its ID', async () => {
     const petData = {
       name: 'Rex',
       age: AgeGroup.YOUNG,
@@ -42,22 +42,6 @@ describe('#FindPetByIdUseCase', () => {
   });
 
   it("should throw an error if pet doesn't exist", async () => {
-    const petData = {
-      name: 'Rex',
-      age: AgeGroup.YOUNG,
-      about: 'Very friendly and playful',
-      energyLevel: Level.HIGH,
-      independenceLevel: Level.LOW,
-      roomSize: Size.SMALL,
-      size: Size.SMALL,
-      organizationId: 'org-01',
-      adopted: false,
-      photos: [],
-      requirements: [],
-    };
-
-    await petRepository.create(new Pet(petData, '123'));
-
     expect(async () => await sut.execute('456')).rejects.toBeInstanceOf(
       NotFoundException
     );

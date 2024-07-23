@@ -1,17 +1,23 @@
 import { InvalidCredentials } from '@errors/InvalidCredentials.js';
 import { NotFoundException } from '@errors/NotFoundException.js';
 import { InMemoryOrgRepository } from '@repositories/in-memory/InMemoryOrgRepository.js';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { AuthOrgUseCase } from './authOrgUseCase.js';
 import { CreateOrgUseCase } from './createOrgUseCase.js';
 import { CreateOrgDTO } from './dto/createOrgDTO.js';
 
-describe('#AuthOrgUseCase', () => {
-  it('should throw an error with invalid credentials', async () => {
-    const orgRepository = new InMemoryOrgRepository();
-    const createOrgUseCase = new CreateOrgUseCase(orgRepository);
-    const authOrgUseCase = new AuthOrgUseCase(orgRepository);
+let orgRepository: InMemoryOrgRepository;
+let createOrgUseCase: CreateOrgUseCase;
+let sut: AuthOrgUseCase;
 
+describe('#AuthOrgUseCase', () => {
+  beforeEach(() => {
+    orgRepository = new InMemoryOrgRepository();
+    createOrgUseCase = new CreateOrgUseCase(orgRepository);
+    sut = new AuthOrgUseCase(orgRepository);
+  });
+
+  it('should throw an error with invalid credentials', async () => {
     const orgData: CreateOrgDTO = {
       owner: 'John Doe',
       email: 'johndoe@example.com',
@@ -30,16 +36,11 @@ describe('#AuthOrgUseCase', () => {
     await createOrgUseCase.execute(orgData);
 
     expect(
-      async () =>
-        await authOrgUseCase.execute('johndoe@example.com', 'wrong-password')
+      async () => await sut.execute('johndoe@example.com', 'wrong-password')
     ).rejects.toBeInstanceOf(InvalidCredentials);
   });
 
   it("should throw an error when org doesn't exist", async () => {
-    const orgRepository = new InMemoryOrgRepository();
-    const createOrgUseCase = new CreateOrgUseCase(orgRepository);
-    const authOrgUseCase = new AuthOrgUseCase(orgRepository);
-
     const orgData: CreateOrgDTO = {
       owner: 'John Doe',
       email: 'johndoe@example.com',
@@ -58,7 +59,7 @@ describe('#AuthOrgUseCase', () => {
     await createOrgUseCase.execute(orgData);
 
     expect(
-      async () => await authOrgUseCase.execute('inexistent email', '123456')
+      async () => await sut.execute('inexistent email', '123456')
     ).rejects.toBeInstanceOf(NotFoundException);
   });
 });

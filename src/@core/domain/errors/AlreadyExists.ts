@@ -1,4 +1,6 @@
-export class AlreadyExists extends Error {
+import { ClientError } from './ClientError.js';
+
+export class AlreadyExists extends ClientError {
   constructor(message: string) {
     super(message);
     this.name = 'AlreadyExists';

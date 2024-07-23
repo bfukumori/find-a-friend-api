@@ -19,7 +19,11 @@
       "@entities/*": ["src/@core/domain/entities/*"],
       "@use-cases/*": ["src/@core/domain/use-cases/*"],
       "@constants/*": ["src/@core/domain/constants/*"],
-      "@errors/*": ["src/@core/domain/errors/*"]
+      "@errors/*": ["src/@core/domain/errors/*"],
+      "@utils/*": ["src/@core/domain/utils/*"],
+      "@controllers/*": ["src/@core/infra/controllers/*"],
+      "@routes/*": ["src/@core/infra/routes/*"],
+      "@factories/*": ["src/@core/infra/factories/*"]
     }
   }
 }

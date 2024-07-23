@@ -1,14 +1,19 @@
 import { AlreadyExists } from '@errors/AlreadyExists.js';
 import { InMemoryOrgRepository } from '@repositories/in-memory/InMemoryOrgRepository.js';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { CreateOrgUseCase } from './createOrgUseCase.js';
 import { CreateOrgDTO } from './dto/createOrgDTO.js';
 
-describe('#CreateOrgUseCase', () => {
-  it('should create a org', async () => {
-    const orgRepository = new InMemoryOrgRepository();
-    const createOrgUseCase = new CreateOrgUseCase(orgRepository);
+let orgRepository: InMemoryOrgRepository;
+let sut: CreateOrgUseCase;
 
+describe('#CreateOrgUseCase', () => {
+  beforeEach(() => {
+    orgRepository = new InMemoryOrgRepository();
+    sut = new CreateOrgUseCase(orgRepository);
+  });
+
+  it('should create a org', async () => {
     const orgData: CreateOrgDTO = {
       owner: 'John Doe',
       email: 'johndoe@example.com',
@@ -24,7 +29,7 @@ describe('#CreateOrgUseCase', () => {
       password: '123456',
     };
 
-    await createOrgUseCase.execute(orgData);
+    await sut.execute(orgData);
 
     const result = Array.from(orgRepository.items);
 
@@ -34,9 +39,6 @@ describe('#CreateOrgUseCase', () => {
   });
 
   it('should throw an error if org already exists', async () => {
-    const orgRepository = new InMemoryOrgRepository();
-    const createOrgUseCase = new CreateOrgUseCase(orgRepository);
-
     const orgData: CreateOrgDTO = {
       owner: 'John Doe',
       email: 'johndoe@example.com',
@@ -52,10 +54,10 @@ describe('#CreateOrgUseCase', () => {
       password: '123456',
     };
 
-    await createOrgUseCase.execute(orgData);
+    await sut.execute(orgData);
 
-    expect(
-      async () => await createOrgUseCase.execute(orgData)
-    ).rejects.toBeInstanceOf(AlreadyExists);
+    expect(async () => await sut.execute(orgData)).rejects.toBeInstanceOf(
+      AlreadyExists
+    );
   });
 });
