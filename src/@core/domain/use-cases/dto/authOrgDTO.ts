@@ -1,4 +1,4 @@
-export type AuthOrgDTO = {
+export type AuthOrgRequestDTO = {
   email: string;
   password: string;
 };

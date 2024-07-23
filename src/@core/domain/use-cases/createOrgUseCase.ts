@@ -2,7 +2,7 @@ import Organization from '@entities/organization.js';
 import { AlreadyExists } from '@errors/AlreadyExists.js';
 import { IOrgRepository } from '@repositories/interfaces/IOrgRepository.js';
 import { IEncrypter } from '@services/interfaces/IEncrypter.js';
-import { CreateOrgDTO } from './dto/createOrgDTO.js';
+import { CreateOrgRequestDTO } from './dto/createOrgDTO.js';
 
 export class CreateOrgUseCase {
   constructor(
@@ -10,7 +10,7 @@ export class CreateOrgUseCase {
     private readonly encrypter: IEncrypter
   ) {}
 
-  async execute(orgData: CreateOrgDTO): Promise<void> {
+  async execute(orgData: CreateOrgRequestDTO): Promise<void> {
     const alreadyExists = await this.orgRepository.findByEmail(orgData.email);
 
     if (alreadyExists) {

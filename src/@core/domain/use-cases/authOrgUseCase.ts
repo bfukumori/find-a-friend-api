@@ -1,7 +1,8 @@
 import { InvalidCredentials } from '@errors/InvalidCredentials.js';
 import { IOrgRepository } from '@repositories/interfaces/IOrgRepository.js';
 import { IEncrypter } from '@services/interfaces/IEncrypter.js';
-import { AuthOrgDTO } from './dto/authOrgDTO.js';
+import { app } from 'src/@core/infra/libs/fastify.js';
+import { AuthOrgRequestDTO } from './dto/authOrgDTO.js';
 
 export class AuthOrgUseCase {
   constructor(
@@ -9,7 +10,7 @@ export class AuthOrgUseCase {
     private readonly encrypter: IEncrypter
   ) {}
 
-  async execute({ email, password }: AuthOrgDTO): Promise<void> {
+  async execute({ email, password }: AuthOrgRequestDTO): Promise<void> {
     const org = await this.orgRepository.findByEmail(email);
 
     if (!org) {
@@ -21,5 +22,7 @@ export class AuthOrgUseCase {
     if (!isValid) {
       throw new InvalidCredentials('Invalid credentials');
     }
+
+    app.jwt.sign({ orgId: org.id });
   }
 }

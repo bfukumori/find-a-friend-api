@@ -6,7 +6,7 @@ import { IEncrypter } from '@services/interfaces/IEncrypter.js';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AuthOrgUseCase } from './authOrgUseCase.js';
 import { CreateOrgUseCase } from './createOrgUseCase.js';
-import { CreateOrgDTO } from './dto/createOrgDTO.js';
+import { CreateOrgRequestDTO } from './dto/createOrgDTO.js';
 
 let orgRepository: InMemoryOrgRepository;
 let createOrgUseCase: CreateOrgUseCase;
@@ -22,7 +22,7 @@ describe('#AuthOrgUseCase', () => {
   });
 
   it('should throw an error with invalid credentials', async () => {
-    const orgData: CreateOrgDTO = {
+    const orgData: CreateOrgRequestDTO = {
       owner: 'John Doe',
       email: 'johndoe@example.com',
       postalCode: '12345',
@@ -49,7 +49,7 @@ describe('#AuthOrgUseCase', () => {
   });
 
   it("should throw an error when org doesn't exist", async () => {
-    const orgData: CreateOrgDTO = {
+    const orgData: CreateOrgRequestDTO = {
       owner: 'John Doe',
       email: 'johndoe@example.com',
       postalCode: '12345',

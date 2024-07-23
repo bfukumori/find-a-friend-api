@@ -15,7 +15,7 @@ export const errorHandler: FastifyErrorHandler = async (error, _, reply) => {
   }
 
   if (error instanceof InvalidCredentials) {
-    return reply.status(403).send({ message: error.message });
+    return reply.status(401).send({ message: error.message });
   }
 
   if (error instanceof ClientError) {

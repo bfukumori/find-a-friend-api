@@ -24,7 +24,8 @@
       "@controllers/*": ["src/@core/infra/controllers/*"],
       "@routes/*": ["src/@core/infra/routes/*"],
       "@factories/*": ["src/@core/infra/factories/*"],
-      "@services/*": ["src/@core/infra/services/*"]
+      "@services/*": ["src/@core/infra/services/*"],
+      "@middlewares/*": ["src/@core/infra/middlewares/*"]
     }
   }
 }

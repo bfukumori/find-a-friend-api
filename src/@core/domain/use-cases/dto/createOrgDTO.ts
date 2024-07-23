@@ -1,4 +1,4 @@
-export type CreateOrgDTO = {
+export type CreateOrgRequestDTO = {
   owner: string;
   email: string;
   postalCode: string;

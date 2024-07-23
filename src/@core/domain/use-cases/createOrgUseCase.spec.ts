@@ -4,7 +4,7 @@ import { BCryptService } from '@services/BCryptService.js';
 import { IEncrypter } from '@services/interfaces/IEncrypter.js';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CreateOrgUseCase } from './createOrgUseCase.js';
-import { CreateOrgDTO } from './dto/createOrgDTO.js';
+import { CreateOrgRequestDTO } from './dto/createOrgDTO.js';
 
 let orgRepository: InMemoryOrgRepository;
 let encrypter: IEncrypter;
@@ -18,7 +18,7 @@ describe('#CreateOrgUseCase', () => {
   });
 
   it('should create a org', async () => {
-    const orgData: CreateOrgDTO = {
+    const orgData: CreateOrgRequestDTO = {
       owner: 'John Doe',
       email: 'johndoe@example.com',
       postalCode: '12345',
@@ -44,7 +44,7 @@ describe('#CreateOrgUseCase', () => {
   });
 
   it('should throw an error if org already exists', async () => {
-    const orgData: CreateOrgDTO = {
+    const orgData: CreateOrgRequestDTO = {
       owner: 'John Doe',
       email: 'johndoe@example.com',
       postalCode: '12345',
