@@ -19,6 +19,7 @@ describe('#FindPetByIdUseCase', () => {
 
   it('should find a pet by its ID', async () => {
     const petData = {
+      id: '123',
       name: 'Rex',
       age: AgeGroup.YOUNG,
       about: 'Very friendly and playful',
@@ -32,13 +33,11 @@ describe('#FindPetByIdUseCase', () => {
       requirements: [],
     };
 
-    await petRepository.create(new Pet(petData, '123'));
+    await petRepository.create(new Pet(petData));
 
     const result = await sut.execute('123');
 
-    const expected = { props: petData, id: '123' };
-
-    expect(result).toEqual(expected);
+    expect(result).toEqual(petData);
   });
 
   it("should throw an error if pet doesn't exist", async () => {

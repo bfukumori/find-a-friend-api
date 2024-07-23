@@ -5,7 +5,7 @@ import { prisma } from '../libs/prisma.js';
 export class PrismaOrgRepository implements IOrgRepository {
   async create(org: Organization): Promise<void> {
     await prisma.organization.create({
-      data: org.props,
+      data: org,
     });
   }
 
@@ -20,7 +20,7 @@ export class PrismaOrgRepository implements IOrgRepository {
       return null;
     }
 
-    return new Organization(result);
+    return result;
   }
 
   async findById(id: string): Promise<Organization | null> {
@@ -34,6 +34,6 @@ export class PrismaOrgRepository implements IOrgRepository {
       return null;
     }
 
-    return new Organization(result);
+    return result;
   }
 }

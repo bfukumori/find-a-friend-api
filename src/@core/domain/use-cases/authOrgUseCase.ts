@@ -13,7 +13,7 @@ export class AuthOrgUseCase {
       throw new NotFoundException('Organization not found');
     }
 
-    const isValid = await compare(password, org.props.password);
+    const isValid = await compare(password, org.password);
 
     if (!isValid) {
       throw new InvalidCredentials('Invalid credentials');

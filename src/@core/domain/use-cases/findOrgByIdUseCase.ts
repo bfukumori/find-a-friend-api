@@ -11,6 +11,8 @@ export class FindOrgByIdUseCase {
       throw new NotFoundException('Organization not found');
     }
 
+    Reflect.deleteProperty(org, 'password');
+
     return org;
   }
 }

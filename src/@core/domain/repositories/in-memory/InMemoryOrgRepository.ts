@@ -11,8 +11,7 @@ export class InMemoryOrgRepository implements IOrgRepository {
   async findByEmail(email: string): Promise<Organization | null> {
     return (
       Array.from(this.items).find(
-        (org) =>
-          org.props.email.toLowerCase().trim() === email.toLowerCase().trim()
+        (org) => org.email.toLowerCase().trim() === email.toLowerCase().trim()
       ) ?? null
     );
   }

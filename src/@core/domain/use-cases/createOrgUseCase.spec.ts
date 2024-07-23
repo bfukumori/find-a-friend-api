@@ -34,8 +34,9 @@ describe('#CreateOrgUseCase', () => {
     const result = Array.from(orgRepository.items);
 
     expect(result).toHaveLength(1);
-    expect(result[0].props.owner).toEqual('John Doe');
-    expect(result[0].props.email).toEqual('johndoe@example.com');
+    expect(result[0].id).toBeDefined();
+    expect(result[0].owner).toEqual('John Doe');
+    expect(result[0].email).toEqual('johndoe@example.com');
   });
 
   it('should throw an error if org already exists', async () => {

@@ -8,7 +8,7 @@ import { prisma } from '../libs/prisma.js';
 export class PrismaPetRepository implements IPetRepository {
   async create(pet: Pet): Promise<void> {
     await prisma.pet.create({
-      data: pet.props,
+      data: pet,
     });
   }
 
@@ -41,6 +41,6 @@ export class PrismaPetRepository implements IPetRepository {
       return null;
     }
 
-    return new Pet(result);
+    return result;
   }
 }

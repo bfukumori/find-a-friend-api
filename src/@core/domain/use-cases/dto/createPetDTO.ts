@@ -1,12 +1,12 @@
 import {
-  PetSize,
+  AgeGroupType,
   EnergyLevel,
   IndependenceLevel,
+  PetSize,
   RoomSize,
-  AgeGroupType,
 } from '@constants/types.js';
 
-export type CreatePetDTO = {
+export type CreatePetRequestDTO = {
   name: string;
   about: string;
   age: AgeGroupType;

@@ -1,3 +1,4 @@
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { FastifyInstance } from 'fastify';
 import { ZodError } from 'zod';
 import { ClientError } from './ClientError.js';
@@ -15,6 +16,12 @@ export const errorHandler: FastifyErrorHandler = async (error, _, reply) => {
   if (error instanceof ClientError) {
     return reply.status(422).send({
       message: error.message,
+    });
+  }
+
+  if (error instanceof PrismaClientKnownRequestError) {
+    return reply.status(400).send({
+      error,
     });
   }
 

@@ -20,21 +20,19 @@ export class InMemoryPetRepository implements IPetRepository {
 
     const orgsByCity = orgs.filter(
       (org) =>
-        org.props.city.toLowerCase().trim() === params.city.toLowerCase().trim()
+        org.city.toLowerCase().trim() === params.city.toLowerCase().trim()
     );
 
     const filteredPets = pets
+      .filter((pet) => orgsByCity.some((org) => org.id === pet.organizationId))
+      .filter((pet) => (params.age ? pet.age === params.age : true))
       .filter((pet) =>
-        orgsByCity.some((org) => org.id === pet.props.organizationId)
+        params.energyLevel ? pet.energyLevel === params.energyLevel : true
       )
-      .filter((pet) => (params.age ? pet.props.age === params.age : true))
-      .filter((pet) =>
-        params.energyLevel ? pet.props.energyLevel === params.energyLevel : true
-      )
-      .filter((pet) => (params.size ? pet.props.size === params.size : true))
+      .filter((pet) => (params.size ? pet.size === params.size : true))
       .filter((pet) =>
         params.independenceLevel
-          ? pet.props.independenceLevel === params.independenceLevel
+          ? pet.independenceLevel === params.independenceLevel
           : true
       );
 
