@@ -1,6 +1,8 @@
 import { InvalidCredentials } from '@errors/InvalidCredentials.js';
 import { NotFoundException } from '@errors/NotFoundException.js';
 import { InMemoryOrgRepository } from '@repositories/in-memory/InMemoryOrgRepository.js';
+import { BCryptService } from '@services/BCryptService.js';
+import { IEncrypter } from '@services/interfaces/IEncrypter.js';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AuthOrgUseCase } from './authOrgUseCase.js';
 import { CreateOrgUseCase } from './createOrgUseCase.js';
@@ -9,12 +11,14 @@ import { CreateOrgDTO } from './dto/createOrgDTO.js';
 let orgRepository: InMemoryOrgRepository;
 let createOrgUseCase: CreateOrgUseCase;
 let sut: AuthOrgUseCase;
+let encrypter: IEncrypter;
 
 describe('#AuthOrgUseCase', () => {
   beforeEach(() => {
     orgRepository = new InMemoryOrgRepository();
-    createOrgUseCase = new CreateOrgUseCase(orgRepository);
-    sut = new AuthOrgUseCase(orgRepository);
+    encrypter = new BCryptService();
+    createOrgUseCase = new CreateOrgUseCase(orgRepository, encrypter);
+    sut = new AuthOrgUseCase(orgRepository, encrypter);
   });
 
   it('should throw an error with invalid credentials', async () => {
@@ -36,7 +40,11 @@ describe('#AuthOrgUseCase', () => {
     await createOrgUseCase.execute(orgData);
 
     expect(
-      async () => await sut.execute('johndoe@example.com', 'wrong-password')
+      async () =>
+        await sut.execute({
+          email: 'johndoe@example.com',
+          password: 'wrong-password',
+        })
     ).rejects.toBeInstanceOf(InvalidCredentials);
   });
 
@@ -59,7 +67,8 @@ describe('#AuthOrgUseCase', () => {
     await createOrgUseCase.execute(orgData);
 
     expect(
-      async () => await sut.execute('inexistent email', '123456')
+      async () =>
+        await sut.execute({ email: 'inexistent email', password: '123456' })
     ).rejects.toBeInstanceOf(NotFoundException);
   });
 });

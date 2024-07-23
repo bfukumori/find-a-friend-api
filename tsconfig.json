@@ -23,7 +23,8 @@
       "@utils/*": ["src/@core/domain/utils/*"],
       "@controllers/*": ["src/@core/infra/controllers/*"],
       "@routes/*": ["src/@core/infra/routes/*"],
-      "@factories/*": ["src/@core/infra/factories/*"]
+      "@factories/*": ["src/@core/infra/factories/*"],
+      "@services/*": ["src/@core/infra/services/*"]
     }
   }
 }

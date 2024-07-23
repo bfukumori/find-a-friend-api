@@ -2,6 +2,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { FastifyInstance } from 'fastify';
 import { ZodError } from 'zod';
 import { ClientError } from './ClientError.js';
+import { InvalidCredentials } from './InvalidCredentials.js';
 
 type FastifyErrorHandler = FastifyInstance['errorHandler'];
 
@@ -11,6 +12,10 @@ export const errorHandler: FastifyErrorHandler = async (error, _, reply) => {
       message: 'Validation input error',
       errors: error.flatten().fieldErrors,
     });
+  }
+
+  if (error instanceof InvalidCredentials) {
+    return reply.status(403).send({ message: error.message });
   }
 
   if (error instanceof ClientError) {

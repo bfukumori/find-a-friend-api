@@ -1,19 +1,22 @@
 import { InvalidCredentials } from '@errors/InvalidCredentials.js';
-import { NotFoundException } from '@errors/NotFoundException.js';
 import { IOrgRepository } from '@repositories/interfaces/IOrgRepository.js';
-import { compare } from 'bcrypt-ts';
+import { IEncrypter } from '@services/interfaces/IEncrypter.js';
+import { AuthOrgDTO } from './dto/authOrgDTO.js';
 
 export class AuthOrgUseCase {
-  constructor(private readonly orgRepository: IOrgRepository) {}
+  constructor(
+    private readonly orgRepository: IOrgRepository,
+    private readonly encrypter: IEncrypter
+  ) {}
 
-  async execute(email: string, password: string): Promise<void> {
+  async execute({ email, password }: AuthOrgDTO): Promise<void> {
     const org = await this.orgRepository.findByEmail(email);
 
     if (!org) {
-      throw new NotFoundException('Organization not found');
+      throw new InvalidCredentials('Invalid credentials');
     }
 
-    const isValid = await compare(password, org.password);
+    const isValid = await this.encrypter.compare(password, org.password);
 
     if (!isValid) {
       throw new InvalidCredentials('Invalid credentials');

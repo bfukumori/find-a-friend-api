@@ -1,16 +1,20 @@
 import { AlreadyExists } from '@errors/AlreadyExists.js';
 import { InMemoryOrgRepository } from '@repositories/in-memory/InMemoryOrgRepository.js';
+import { BCryptService } from '@services/BCryptService.js';
+import { IEncrypter } from '@services/interfaces/IEncrypter.js';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CreateOrgUseCase } from './createOrgUseCase.js';
 import { CreateOrgDTO } from './dto/createOrgDTO.js';
 
 let orgRepository: InMemoryOrgRepository;
+let encrypter: IEncrypter;
 let sut: CreateOrgUseCase;
 
 describe('#CreateOrgUseCase', () => {
   beforeEach(() => {
     orgRepository = new InMemoryOrgRepository();
-    sut = new CreateOrgUseCase(orgRepository);
+    encrypter = new BCryptService();
+    sut = new CreateOrgUseCase(orgRepository, encrypter);
   });
 
   it('should create a org', async () => {
