@@ -1,4 +1,4 @@
-import app from '@src/index.js';
+import { app } from '@src/app.js';
 import request from 'supertest';
 import OrgTestBuilder from 'test/orgTestBuilder.js';
 import PetTestBuilder from 'test/petTestBuilder.js';

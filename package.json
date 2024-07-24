@@ -5,14 +5,17 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx --watch src/index.ts",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:e2e": "vitest run --dir src/@core/infra/controllers",
-    "test:e2e:watch": "vitest --dir src/@core/infra/controllers",
-    "coverage": "vitest run --coverage",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "dev": "pnpm prisma:migrate && dotenv -e .env.development -- tsx --watch src/server.ts",
+    "test:unit": "vitest run -c ./vitest.config.unit.ts",
+    "test:unit:watch": "vitest -c ./vitest.config.unit.ts",
+    "test:unit:cov": "vitest run -c ./vitest.config.unit.ts --coverage",
+    "docker:up": "docker compose up -d postgresdev",
+    "docker:down": "docker compose down postgresdev",
+    "docker:up:test": "docker compose up -d postgrestest",
+    "docker:down:test": "docker compose down postgrestest",
+    "test:int": "pnpm docker:up && dotenv -e .env.test -- pnpm prisma migrate deploy && dotenv -e .env.test -- vitest run -c ./vitest.config.int.ts",
+    "prisma:migrate": "pnpm docker:up && dotenv -e .env.development -- pnpm prisma migrate dev",
+    "prisma:studio": "dotenv -e .env.development -- pnpm prisma studio"
   },
   "keywords": [
     "rocketseat",
@@ -28,6 +31,7 @@
     "@types/node": "^20.14.11",
     "@types/supertest": "^6.0.2",
     "@vitest/coverage-v8": "^2.0.4",
+    "dotenv-cli": "^7.4.2",
     "prisma": "^5.17.0",
     "supertest": "^7.0.0",
     "tsx": "^4.16.2",

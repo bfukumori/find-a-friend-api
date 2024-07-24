@@ -1,4 +1,4 @@
-import app from '@src/index.js';
+import { app } from '@src/app.js';
 import request from 'supertest';
 import OrgTestBuilder from 'test/orgTestBuilder.js';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
