@@ -13,9 +13,10 @@
     "docker:down": "docker compose down postgresdev",
     "docker:up:test": "docker compose up -d postgrestest",
     "docker:down:test": "docker compose down postgrestest",
-    "test:int": "pnpm docker:up && dotenv -e .env.test -- pnpm prisma migrate deploy && dotenv -e .env.test -- vitest run -c ./vitest.config.int.ts",
+    "test:int": "pnpm docker:up:test && dotenv -e .env.test -- pnpm prisma migrate deploy && dotenv -e .env.test -- vitest run -c ./vitest.config.int.ts",
     "prisma:migrate": "pnpm docker:up && dotenv -e .env.development -- pnpm prisma migrate dev",
-    "prisma:studio": "dotenv -e .env.development -- pnpm prisma studio"
+    "prisma:studio": "dotenv -e .env.development -- pnpm prisma studio",
+    "prisma:studio:test": "dotenv -e .env.test -- pnpm prisma studio"
   },
   "keywords": [
     "rocketseat",
