@@ -42,10 +42,10 @@ describe('#CreateOrgUseCase', () => {
     expect(result[0].email).toEqual('johndoe@example.com');
   });
 
-  it('should throw an error if an org already exists', async () => {
-    let orgData = {
+  it('should throw an error if an org already exists when searching by id', async () => {
+    const orgData = {
       owner: 'John Doe',
-      email: 'johndoe@example.com', // must be unique
+      email: 'johndoe@example.com',
       postalCode: '12345',
       addressName: 'Av. Paulista',
       addressNumber: '1234',
@@ -54,20 +54,12 @@ describe('#CreateOrgUseCase', () => {
       state: 'SP',
       latitude: 123.456,
       longitude: 123.456,
-      whatsapp: '1234567890', // must be unique
+      whatsapp: '1234567890',
       password: '123456',
     };
 
     await sut.execute(orgData);
 
-    // Should throw an error because the email is the same
-    expect(async () => await sut.execute(orgData)).rejects.toBeInstanceOf(
-      AlreadyExists
-    );
-
-    orgData.email = 'other_email@example.com';
-
-    // Should throw an error because the whatsapp number is the same
     expect(async () => await sut.execute(orgData)).rejects.toBeInstanceOf(
       AlreadyExists
     );

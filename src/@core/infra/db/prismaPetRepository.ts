@@ -6,10 +6,12 @@ import {
 import { prisma } from '../libs/prisma.js';
 
 export class PrismaPetRepository implements IPetRepository {
-  async create(pet: Pet): Promise<void> {
-    await prisma.pet.create({
+  async create(pet: Pet): Promise<Pet> {
+    const result = await prisma.pet.create({
       data: pet,
     });
+
+    return result;
   }
 
   async findAll(params: FindAllParams): Promise<Pet[]> {
@@ -27,7 +29,7 @@ export class PrismaPetRepository implements IPetRepository {
       },
     });
 
-    return result.map((pet) => new Pet(pet));
+    return result;
   }
 
   async findById(id: string): Promise<Pet | null> {

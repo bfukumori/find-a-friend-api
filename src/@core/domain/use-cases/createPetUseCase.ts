@@ -29,7 +29,7 @@ export class CreatePetUseCase {
     private readonly orgRepository: IOrgRepository
   ) {}
 
-  async execute(petData: CreatePetRequest): Promise<void> {
+  async execute(petData: CreatePetRequest): Promise<Pet> {
     const orgExists = await this.orgRepository.findById(petData.organizationId);
 
     if (!orgExists) {
@@ -38,6 +38,8 @@ export class CreatePetUseCase {
 
     const pet = new Pet(petData);
 
-    await this.petRepository.create(pet);
+    const response = await this.petRepository.create(pet);
+
+    return response;
   }
 }

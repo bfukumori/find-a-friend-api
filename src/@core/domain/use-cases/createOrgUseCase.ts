@@ -24,18 +24,10 @@ export class CreateOrgUseCase {
     private readonly encrypter: IEncrypter
   ) {}
 
-  async execute(orgData: CreateOrgRequest): Promise<void> {
+  async execute(orgData: CreateOrgRequest): Promise<Organization> {
     const foundByEmail = await this.orgRepository.findByEmail(orgData.email);
 
     if (foundByEmail) {
-      throw new AlreadyExists('Organization already exists');
-    }
-
-    const foundByWhatsapp = await this.orgRepository.findByWhatsapp(
-      orgData.whatsapp
-    );
-
-    if (foundByWhatsapp) {
       throw new AlreadyExists('Organization already exists');
     }
 
@@ -43,6 +35,8 @@ export class CreateOrgUseCase {
 
     const org = new Organization({ ...orgData, password: hashedPassword });
 
-    await this.orgRepository.create(org);
+    const response = await this.orgRepository.create(org);
+
+    return response;
   }
 }

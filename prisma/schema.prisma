@@ -56,7 +56,7 @@ model Organization {
   state         String
   latitude      Float
   longitude     Float
-  whatsapp      String @unique
+  whatsapp      String
   password      String
 
   pets Pet[]

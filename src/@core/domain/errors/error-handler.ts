@@ -1,4 +1,3 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { FastifyInstance } from 'fastify';
 import { ZodError } from 'zod';
 
@@ -9,12 +8,6 @@ export const errorHandler: FastifyErrorHandler = async (error, _, reply) => {
     return reply.status(400).send({
       message: 'Validation input error',
       errors: error.flatten().fieldErrors,
-    });
-  }
-
-  if (error instanceof PrismaClientKnownRequestError) {
-    return reply.status(400).send({
-      message: error.message,
     });
   }
 

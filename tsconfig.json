@@ -15,6 +15,7 @@
 
     "baseUrl": ".",
     "paths": {
+      "@src/*": ["src/*"],
       "@repositories/*": ["src/@core/domain/repositories/*"],
       "@entities/*": ["src/@core/domain/entities/*"],
       "@use-cases/*": ["src/@core/domain/use-cases/*"],
@@ -25,7 +26,8 @@
       "@routes/*": ["src/@core/infra/routes/*"],
       "@factories/*": ["src/@core/infra/factories/*"],
       "@services/*": ["src/@core/infra/services/*"],
-      "@middlewares/*": ["src/@core/infra/middlewares/*"]
+      "@middlewares/*": ["src/@core/infra/middlewares/*"],
+      "@test/*": ["src/test/*"]
     }
   }
 }

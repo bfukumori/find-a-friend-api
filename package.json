@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "dev": "tsx --watch src/index.ts",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "vitest run --dir src/@core/infra/controllers",
+    "test:e2e:watch": "vitest --dir src/@core/infra/controllers",
     "coverage": "vitest run --coverage",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"
@@ -21,9 +24,12 @@
   "author": "Bruno Fukumori",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/node": "^20.14.11",
+    "@types/supertest": "^6.0.2",
     "@vitest/coverage-v8": "^2.0.4",
     "prisma": "^5.17.0",
+    "supertest": "^7.0.0",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3",
     "vite-tsconfig-paths": "^4.3.2",
@@ -34,7 +40,6 @@
     "@prisma/client": "^5.17.0",
     "bcrypt-ts": "^5.0.2",
     "fastify": "^4.28.1",
-    "fastify-plugin": "^4.5.1",
     "zod": "^3.23.8"
   }
 }

@@ -25,9 +25,9 @@ export async function createPetController(
 
   try {
     const useCase = makeCreatePet();
-    await useCase.execute(params);
+    const reponse = await useCase.execute(params);
 
-    return res.status(201).send();
+    return res.status(201).send({ pet: reponse });
   } catch (error) {
     if (error instanceof ClientError) {
       return res.status(error.code).send({ message: error.message });

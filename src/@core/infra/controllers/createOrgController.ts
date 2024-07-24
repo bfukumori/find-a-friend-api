@@ -32,9 +32,11 @@ export async function createOrgController(
 
   try {
     const useCase = makeCreateOrg();
-    await useCase.execute(params);
+    const response = await useCase.execute(params);
 
-    return res.status(201).send();
+    Reflect.deleteProperty(response, 'password');
+
+    return res.status(201).send({ org: response });
   } catch (error) {
     if (error instanceof ClientError) {
       return res.status(error.code).send({ message: error.message });

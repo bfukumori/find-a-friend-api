@@ -3,10 +3,12 @@ import { IOrgRepository } from '@repositories/interfaces/IOrgRepository.js';
 import { prisma } from '../libs/prisma.js';
 
 export class PrismaOrgRepository implements IOrgRepository {
-  async create(org: Organization): Promise<void> {
-    await prisma.organization.create({
+  async create(org: Organization): Promise<Organization> {
+    const result = await prisma.organization.create({
       data: org,
     });
+
+    return result;
   }
 
   async findByEmail(email: string): Promise<Organization | null> {
@@ -27,20 +29,6 @@ export class PrismaOrgRepository implements IOrgRepository {
     const result = await prisma.organization.findUnique({
       where: {
         id,
-      },
-    });
-
-    if (!result) {
-      return null;
-    }
-
-    return result;
-  }
-
-  async findByWhatsapp(whatsapp: string): Promise<Organization | null> {
-    const result = await prisma.organization.findUnique({
-      where: {
-        whatsapp,
       },
     });
 

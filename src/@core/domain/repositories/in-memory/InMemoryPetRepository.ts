@@ -10,8 +10,10 @@ export class InMemoryPetRepository implements IPetRepository {
 
   constructor(private readonly orgRepository: InMemoryOrgRepository) {}
 
-  async create(pet: Pet): Promise<void> {
+  async create(pet: Pet): Promise<Pet> {
     this.items.add(pet);
+
+    return pet;
   }
 
   async findAll(params: FindAllParams): Promise<Pet[]> {

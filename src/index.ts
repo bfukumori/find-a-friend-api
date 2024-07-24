@@ -2,17 +2,19 @@ import { errorHandler } from '@errors/error-handler.js';
 import fastifyJwt from '@fastify/jwt';
 import { orgRoutes } from '@routes/orgRoutes.js';
 import { petRoutes } from '@routes/petRoutes.js';
-import { app } from './@core/infra/libs/fastify.js';
+import { fastify } from './@core/infra/libs/fastify.js';
 
-app.setErrorHandler(errorHandler);
+fastify.setErrorHandler(errorHandler);
 
-app.register(fastifyJwt, {
+fastify.register(fastifyJwt, {
   secret: 'supersecret',
 });
 
-app.register(petRoutes);
-app.register(orgRoutes);
+fastify.register(petRoutes);
+fastify.register(orgRoutes);
 
-app.listen({ port: 3000 }, () => {
+fastify.listen({ port: 3000 }, () => {
   console.log('Server is running on port 3000');
 });
+
+export default fastify;

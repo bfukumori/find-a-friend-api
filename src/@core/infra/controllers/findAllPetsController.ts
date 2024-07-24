@@ -1,5 +1,4 @@
 import { AgeGroup, Level, Size } from '@constants/enums.js';
-import { ClientError } from '@errors/ClientError.js';
 import { makeFindAllPets } from '@factories/makeFindAllPets.js';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
@@ -18,14 +17,8 @@ export async function findAllPetsController(
 ): Promise<void> {
   const query = findAllPetsSchema.parse(req.query);
 
-  try {
-    const useCase = makeFindAllPets();
-    const pets = await useCase.execute(query);
+  const useCase = makeFindAllPets();
+  const pets = await useCase.execute(query);
 
-    return res.status(200).send({ pets });
-  } catch (error) {
-    if (error instanceof ClientError) {
-      return res.status(error.code).send({ message: error.message });
-    }
-  }
+  return res.status(200).send({ pets });
 }

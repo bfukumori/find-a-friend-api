@@ -15,7 +15,7 @@ export type FindAllParams = {
 };
 
 export interface IPetRepository {
-  create(pet: Pet): Promise<void>;
+  create(pet: Pet): Promise<Pet>;
   findAll(params: FindAllParams): Promise<Pet[]>;
   findById(id: string): Promise<Pet | null>;
 }
