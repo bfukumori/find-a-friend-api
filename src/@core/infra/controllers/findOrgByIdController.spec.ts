@@ -3,7 +3,7 @@ import request from 'supertest';
 import OrgTestBuilder from 'test/orgTestBuilder.js';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-describe('Find org by id (E2E)', () => {
+describe('Find org by id (Integration test)', () => {
   beforeAll(async () => {
     await app.ready();
   });

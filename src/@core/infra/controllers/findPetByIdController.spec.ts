@@ -4,7 +4,7 @@ import OrgTestBuilder from 'test/orgTestBuilder.js';
 import PetTestBuilder from 'test/petTestBuilder.js';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-describe('Find pet by id (E2E)', () => {
+describe('Find pet by id (Integration test)', () => {
   beforeAll(async () => {
     await app.ready();
   });
