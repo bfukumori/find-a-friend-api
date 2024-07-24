@@ -3,6 +3,12 @@ on:
   push:
     branches:
       - main
+
+env:
+  DATABASE_URL: postgresql://prisma:prisma@localhost:5432/test
+  JWT_SECRET: 4c936a88f02954f28c6d555bd9d47d82a6c0cfa7d4efbfe23e1aea3324d65dd420974cad883b9f94a68bedc220a7affa8abb7e78d4fb4cd4a96089938bebaa58
+  PORT: 3000
+
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
@@ -11,3 +17,12 @@ jobs:
       - uses: ./.github/actions/build
       - name: Run tests
         run: pnpm test:unit
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build
+      - uses: ./.github/actions/docker-compose
+      - name: Run tests
+        run: pnpm test:int
